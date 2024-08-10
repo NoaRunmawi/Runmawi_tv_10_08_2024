@@ -39,13 +39,10 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.tv.runmawi.BannerVideoExoPlayerActivity;
 import com.tv.runmawi.DetailActivity;
 import com.tv.runmawi.EpisodeListActivity;
 import com.tv.runmawi.ExoPlayerActivity;
-import com.tv.runmawi.ExoPlayerActivitySample;
 import com.tv.runmawi.R;
-import com.tv.runmawi.WebviewPlayActivity;
 import com.tv.runmawi.constants;
 import com.tv.runmawi.database.SQLiteHelper;
 import com.tv.runmawi.model.Banneritem;
@@ -92,6 +89,8 @@ public class VideoBannerDetailsFragment extends DetailsSupportFragment {
     String user_phone = "";
     String tv_key = "";
 
+    String bunny_url="";
+    String drm_license_url="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate DetailsFragment");
@@ -253,6 +252,8 @@ public class VideoBannerDetailsFragment extends DetailsSupportFragment {
 
 
 
+
+
         String urlXXX = constants.BASE_URL+"apis/video_data.php?";
         RequestQueue queueXXX = Volley.newRequestQueue(getContext().getApplicationContext());
         StringRequest requestXXX = new StringRequest(Request.Method.POST, urlXXX, responseXXX -> {
@@ -262,7 +263,25 @@ public class VideoBannerDetailsFragment extends DetailsSupportFragment {
 
                 String direct_url = jsonObjectXXX.getString("direct_url");
               //  String bunny_url = jsonObjectXXX.getString("bunny_url");
-               // String drm_license = jsonObjectXXX.getString("drm_license_url");
+               // String drm_license_url = jsonObjectXXX.getString("drm_license_url");
+
+
+                try{
+                    bunny_url = jsonObjectXXX.getString("bunny_url");
+                }catch (JSONException ignored) {
+
+                    if(mSelectedMovie.getVideo_id().equals("363")){
+                        bunny_url="https://vz-408b4d55-9c6.b-cdn.net/0bab8df9-dc0b-4d29-a49c-a900e37d6cb4/playlist.m3u8";
+                        drm_license_url="https://video.bunnycdn.com/WidevineLicense/270162/0bab8df9-dc0b-4d29-a49c-a900e37d6cb4?token=5324714327bad35be8367bab640f49a9da44c399caeff5369bf7908a148c3159&expires=1723118937";
+
+                    }
+
+                }
+
+                try{
+                    drm_license_url = jsonObjectXXX.getString("drm_license_url");
+                }catch (JSONException ignored) {
+                }
 
 
 
@@ -294,8 +313,8 @@ public class VideoBannerDetailsFragment extends DetailsSupportFragment {
 //                                    startActivity(intent);
 
                                     Intent intent = new Intent(getActivity(), ExoPlayerActivity.class);
-                                    intent.putExtra("url","https://vz-408b4d55-9c6.b-cdn.net/0bab8df9-dc0b-4d29-a49c-a900e37d6cb4/playlist.m3u8");
-                                    intent.putExtra("drm_license", "https://video.bunnycdn.com/WidevineLicense/270162/0bab8df9-dc0b-4d29-a49c-a900e37d6cb4?token=5324714327bad35be8367bab640f49a9da44c399caeff5369bf7908a148c3159&expires=17231189379");
+                                    intent.putExtra("url", bunny_url);
+                                    intent.putExtra("drm_license", drm_license_url);
                                     startActivity(intent);
                                     Toast.makeText(getActivity(), "Please wait...", Toast.LENGTH_LONG).show();
 

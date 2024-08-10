@@ -10,8 +10,8 @@ android {
         applicationId "com.tv.runmawi"
         minSdk 24
         targetSdk 35
-        versionCode 68
-        versionName "6.68"
+        versionCode 69
+        versionName "6.9"
 
     }
 
